@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Appraisals{% endblock %}
+
+{% block content %}
+{% load rest_framework %}
+<div class="container">
+<div class='btn-wrapper'>
+  <a class="btn btn-info btn-lg top-btn" data-toggle="modal" data-target="#newAppraisal" title="new appraisal" data-tooltip>Submit a Appraisal</a>
+</div>
+
+<h1>Appraisals</h1>
+<div class="list-group">
+	{% for appraisal in appraisals %}
+  <a href="/appraisals/{{ appraisal.id }}/" class="list-group-item">
+    <div class="row">
+      <div class="col-sm-4 vcenter">
+        {{ appraisal.appraiser }}
+      </div><!--
+   --><div class="col-sm-4 vcenter">
+        {{ appraisal.submission.description }}
+        {{ appraisal.is_fossil }}
+      </div><!--
+   --><div class="col-sm-4 vcenter">
+        {{ appraisal.comment }}
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+</div>
+<div class="modal fade" id="newAppraisal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+  <div class="modal-dialog modal-sm"> 
+    <div class="modal-content">
+      <div class="modal-body">
+	    <form action="/appraisals/" method="POST" enctype="multipart/form-data">
+		    {% csrf_token %}
+		    	{% render_form serializer template_pack='rest_framework/vertical' %}
+		    <input type="submit" value="Save">
+		</form>
+		</div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

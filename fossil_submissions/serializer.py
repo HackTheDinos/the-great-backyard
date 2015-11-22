@@ -5,7 +5,7 @@ from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField, 
 class SubmissionSerializer(ModelSerializer):
     class Meta:
         model = Submission
-        fields = ('created', 'description', 'latitude', 'image', 'longitude', 'approved', 'reviewed')
+        fields = ('id', 'created', 'description', 'latitude', 'longitude', 'image', 'approved', 'reviewed')
         read_only_fields = ('approved', 'reviewed',)
 
 class UserSerializer(ModelSerializer):
@@ -26,4 +26,4 @@ class AppraisalSerializer(ModelSerializer):
     submission = HyperlinkedRelatedField(queryset=Submission.objects.all(), view_name='submission-detail')
     class Meta:
         model = Appraisal
-        fields = ('appraiser', 'comment', 'submission', 'is_fossil')
+        fields = ('id', 'appraiser', 'comment', 'submission', 'is_fossil')
