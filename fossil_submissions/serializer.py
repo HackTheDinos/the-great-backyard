@@ -8,11 +8,12 @@ class SubmissionSerializer(ModelSerializer):
         fields = ('created', 'description', 'latitude', 'image', 'longitude', 'approved', 'reviewed')
 
 class UserSerializer(ModelSerializer):
-    user_appraisals = HyperlinkedRelatedField(queryset=Appraisal.objects.all(), view_name='appraisal-detail', many=True)
+    user_appraisals = HyperlinkedRelatedField(view_name='appraisal-detail', many=True, read_only=True)
 
     class Meta:
         model = User
         fields = ('id', 'username', 'user_appraisals', 'password',)
+        read_only_fields = ('user_appraisals',)
 
     def create(self, validated_data):
         user_data = {key: value for key, value in validated_data.items() if key != 'user_appraisals'}
