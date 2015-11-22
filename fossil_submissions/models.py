@@ -19,22 +19,25 @@ class Submission(models.Model):
     reviewed = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "Fossil Submission - {0}".format(self.id)
+        return "Submission_{0}".format(self.id)
 
     class Meta:
         ordering = ('created',)
 
 class Appraisal(models.Model):
-	appraiser = models.ForeignKey('auth.User', related_name='user_appraisals')
-	submission = models.ForeignKey('Submission', unique=True, related_name='submission_appraisals')
-	is_fossil =  models.CharField(max_length=100, choices=(('Yes', 'Yes'), ('No', 'No'), ('Maybe', 'Maybe')), default='Maybe')
-	comment = models.TextField(null=True, blank=True)
+    appraiser = models.ForeignKey('auth.User', related_name='user_appraisals')
+    submission = models.ForeignKey('Submission', unique=True, related_name='submission_appraisals')
+    is_fossil =  models.CharField(max_length=100, choices=(('Yes', 'Yes'), ('No', 'No'), ('Maybe', 'Maybe')), default='Maybe')
+    comment = models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return "{0}: {1} ({2})".format(self.submission, self.is_fossil, self.appraiser.username)
 
 
 @receiver(post_save, sender=Appraisal)
 def update_submission_approval_status(sender, instance, created, **kwargs):
-	status_map = {'Maybe': 'Uncertain', 'Yes': 'Approved', 'No': 'Denied'}
-	submission = instance.submission
-	submission.approved = status_map[instance.is_fossil]
-	submission.reviewed = True
-	submission.save()
+    status_map = {'Maybe': 'Uncertain', 'Yes': 'Approved', 'No': 'Denied'}
+    submission = instance.submission
+    submission.approved = status_map[instance.is_fossil]
+    submission.reviewed = True
+    submission.save()

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from fossil_submissions.models import Submission, Appraisal
 from fossil_submissions.serializer import SubmissionSerializer, UserSerializer, AppraisalSerializer
 from rest_framework import parsers
+from rest_framework import permissions
 from rest_framework import renderers
 from rest_framework.response import Response
 from django.shortcuts import redirect
@@ -47,4 +48,8 @@ class UserViewSet(viewsets.ModelViewSet):
 class AppraisalViewSet(viewsets.ModelViewSet):
     queryset = Appraisal.objects.all()
     serializer_class = AppraisalSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def perform_create(self, serializer):
+        serializer.save(appraiser=self.request.user)
 
