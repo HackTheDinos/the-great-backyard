@@ -1,3 +1,5 @@
+{% load rest_framework %}
+
 <html>
 <body>
 <h1>Submissions</h1>
@@ -9,5 +11,11 @@
 		{{ submission.longitude }}
 		</div>
 	{% endfor %}
+
+	<form action="/submissions/" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% render_form serializer %}
+    <input type="submit" value="Save">
+</form>
 </body>
 </html>

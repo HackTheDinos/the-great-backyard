@@ -6,6 +6,7 @@ from fossil_submissions.serializer import SubmissionSerializer, UserSerializer, 
 from rest_framework import parsers
 from rest_framework import renderers
 from rest_framework.response import Response
+from django.shortcuts import redirect
 
 class SubmissionViewSet(viewsets.ModelViewSet):
     queryset = Submission.objects.all()
@@ -18,9 +19,17 @@ class SubmissionViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         response = super(SubmissionViewSet, self).list(request, *args, **kwargs)
+        serializer = self.get_serializer()
         if request.accepted_renderer.format == 'html':
-        	return Response({'data': response.data}, template_name='list.html')
+        	return Response({'data': response.data, 'serializer': serializer}, template_name='list.html')
         return response
+
+    def create(self, request, *args, **kwargs):
+    	response = super(SubmissionViewSet, self).create(request, *args, **kwargs)
+        serializer = SubmissionSerializer(data=response.data)
+        if not serializer.is_valid():
+        	return Response({'data': serializer.errors, 'serializer': serializer}, template_name='list.html')
+        return redirect('/submissions')
 
     def retrieve(self, request, *args, **kwargs):
         response = super(SubmissionViewSet, self).retrieve(request, *args, **kwargs)
