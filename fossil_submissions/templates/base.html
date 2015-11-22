@@ -1,3 +1,4 @@
+{% load rest_framework %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,12 +20,22 @@
 	      <a class="navbar-brand" href="/">The Great Backyard App</a>
 	    </div>
 	    <div class="collapse navbar-collapse" id="myNavbar">
+	    <ul class="nav navbar-nav navbar-right">
+	        {% block userlinks %}
+	          {% if user.is_authenticated %}
+	            {% optional_logout request user %}
+	          {% else %}
+	            {% optional_login request %}
+	          {% endif %}
+	        {% endblock %}
+	  	  </ul>
 	      <ul class="nav navbar-nav navbar-right">
 	      	<li><a href="/">Featured</a></li>
 	        <li><a href="/submissions/">Submissions</a></li>
 	        <li><a href="/appraisals/">Appraisals</a></li>
 	      </ul>
 	    </div>
+	    
   	</div>
 	</nav>
     {% block content %}{% endblock %}
