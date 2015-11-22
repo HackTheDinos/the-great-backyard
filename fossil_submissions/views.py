@@ -7,7 +7,7 @@ from rest_framework import parsers
 from rest_framework import permissions
 from rest_framework import renderers
 from rest_framework.response import Response
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 
 class SubmissionViewSet(viewsets.ModelViewSet):
     queryset = Submission.objects.all()
@@ -19,10 +19,11 @@ class SubmissionViewSet(viewsets.ModelViewSet):
     renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer)
 
     def list(self, request, *args, **kwargs):
+        submissions = self.queryset
         response = super(SubmissionViewSet, self).list(request, *args, **kwargs)
         serializer = self.get_serializer()
         if request.accepted_renderer.format == 'html':
-        	return Response({'submissions': response.data, 'serializer': serializer}, template_name='submissions/list.html')
+        	return Response({'submissions': submissions, 'serializer': serializer, 'type': type(response)}, template_name='submissions/list.html')
         return response
 
     def create(self, request, *args, **kwargs):
@@ -32,10 +33,11 @@ class SubmissionViewSet(viewsets.ModelViewSet):
         	return Response({'submission': serializer.errors, 'serializer': serializer}, template_name='submissions/list.html')
         return redirect('/submissions')
 
-    def retrieve(self, request, *args, **kwargs):
+    def retrieve(self, request, pk, *args, **kwargs):
+        submission = get_object_or_404(Submission, pk=pk)
         response = super(SubmissionViewSet, self).retrieve(request, *args, **kwargs)
         if request.accepted_renderer.format == 'html':
-        	return Response({'submission': response.data}, template_name='submissions/retrieve.html')
+        	return Response({'submission': submission}, template_name='submissions/retrieve.html')
         return response
 
     def perform_create(self, serializer):
@@ -52,10 +54,11 @@ class AppraisalViewSet(viewsets.ModelViewSet):
     renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer)
 
     def list(self, request, *args, **kwargs):
+        appraisals = self.queryset
         response = super(AppraisalViewSet, self).list(request, *args, **kwargs)
         serializer = self.get_serializer()
         if request.accepted_renderer.format == 'html':
-        	return Response({'appraisals': response.data, 'serializer': serializer}, template_name='appraisals/list.html')
+        	return Response({'appraisals': appraisals, 'serializer': serializer}, template_name='appraisals/list.html')
         return response
 
     def create(self, request, *args, **kwargs):
@@ -65,10 +68,11 @@ class AppraisalViewSet(viewsets.ModelViewSet):
         	return Response({'appraisals': serializer.errors, 'serializer': serializer}, template_name='appraisals/list.html')
         return redirect('/appraisals')
 
-    def retrieve(self, request, *args, **kwargs):
+    def retrieve(self, request, pk, *args, **kwargs):
+        appraisal = get_object_or_404(Appraisal, pk=pk)
         response = super(AppraisalViewSet, self).retrieve(request, *args, **kwargs)
         if request.accepted_renderer.format == 'html':
-        	return Response({'appraisal': response.data}, template_name='appraisals/retrieve.html')
+        	return Response({'appraisal': appraisal}, template_name='appraisals/retrieve.html')
         return response
 
     def perform_create(self, serializer):
