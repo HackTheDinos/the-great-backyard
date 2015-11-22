@@ -29,13 +29,13 @@ class SubmissionViewSet(viewsets.ModelViewSet):
     	response = super(SubmissionViewSet, self).create(request, *args, **kwargs)
         serializer = SubmissionSerializer(data=response.data)
         if not serializer.is_valid():
-        	return Response({'data': serializer.errors, 'serializer': serializer}, template_name='submissions/list.html')
+        	return Response({'submission': serializer.errors, 'serializer': serializer}, template_name='submissions/list.html')
         return redirect('/submissions')
 
     def retrieve(self, request, *args, **kwargs):
         response = super(SubmissionViewSet, self).retrieve(request, *args, **kwargs)
         if request.accepted_renderer.format == 'html':
-        	return Response({'data': response.data}, template_name='submissions/retrieve.html')
+        	return Response({'submission': response.data}, template_name='submissions/retrieve.html')
         return response
 
     def perform_create(self, serializer):
@@ -68,7 +68,7 @@ class AppraisalViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         response = super(AppraisalViewSet, self).retrieve(request, *args, **kwargs)
         if request.accepted_renderer.format == 'html':
-        	return Response({'data': response.data}, template_name='appraisals/retrieve.html')
+        	return Response({'appraisal': response.data}, template_name='appraisals/retrieve.html')
         return response
 
     def perform_create(self, serializer):
