@@ -5,7 +5,7 @@ from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField, 
 class SubmissionSerializer(ModelSerializer):
     class Meta:
         model = Submission
-        fields = ('created', 'description', 'latitude', 'image', 'longitude', 'approved', 'reviewed')
+        fields = ('id', 'created', 'description', 'latitude', 'image', 'longitude', 'approved', 'reviewed')
         read_only_fields = ('approved', 'reviewed',)
 
 class UserSerializer(ModelSerializer):
