@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 def image_upload_to(instance, filename):
     model = instance.__class__.__name__.lower()
@@ -19,6 +21,20 @@ class Submission(models.Model):
     def __unicode__(self):
         return "Fossil Submission - {0}".format(self.id)
 
-
     class Meta:
         ordering = ('created',)
+
+class Appraisal(models.Model):
+	appraiser = models.ForeignKey('auth.User', related_name='user_appraisals')
+	submission = models.ForeignKey('Submission', unique=True, related_name='submission_appraisals')
+	is_fossil =  models.CharField(max_length=100, choices=(('Yes', 'Yes'), ('No', 'No'), ('Maybe', 'Maybe')), default='Maybe')
+	comment = models.TextField(null=True, blank=True)
+
+
+@receiver(post_save, sender=Appraisal)
+def update_submission_approval_status(sender, instance, created, **kwargs):
+	status_map = {'Maybe': 'Uncertain', 'Yes': 'Approved', 'No': 'Denied'}
+	submission = instance.submission
+	submission.approved = status_map[instance.is_fossil]
+	submission.reviewed = True
+	submission.save()

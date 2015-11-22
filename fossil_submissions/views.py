@@ -1,8 +1,8 @@
 from rest_framework import viewsets
 from rest_framework import filters
 from django.contrib.auth.models import User
-from fossil_submissions.models import Submission
-from fossil_submissions.serializer import SubmissionSerializer, UserSerializer
+from fossil_submissions.models import Submission, Appraisal
+from fossil_submissions.serializer import SubmissionSerializer, UserSerializer, AppraisalSerializer
 from rest_framework import parsers
 from rest_framework import renderers
 from rest_framework.response import Response
@@ -31,6 +31,11 @@ class SubmissionViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(image=self.request.data.get('image'))
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class AppraisalViewSet(viewsets.ModelViewSet):
+    queryset = Appraisal.objects.all()
+    serializer_class = AppraisalSerializer
+
