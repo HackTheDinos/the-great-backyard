@@ -12,5 +12,8 @@ class Submission(models.Model):
     approved = models.CharField(max_length=100, choices=(('Approved', 'Approved'), ('Uncertain', 'Uncertain'), ('Denied', 'Denied')), null=True, blank=True)
     reviewed = models.BooleanField(default=False)
 
+    def __unicode__(self):
+        return "Fossil Submission - {0}".format(self.id)
+
     class Meta:
         ordering = ('created',)
