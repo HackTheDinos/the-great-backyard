@@ -1,3 +1,6 @@
+import datetime
+import re
+import os
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -34,6 +37,13 @@ class Appraisal(models.Model):
     def __unicode__(self):
         return "{0}: {1} ({2})".format(self.submission, self.is_fossil, self.appraiser.username)
 
+    # def rename_submission_image(self):
+    #     old_image_path = self.submission.image.__unicode__()
+    #     old_file_name = os.path.split(old_image_path)[1]
+    #     extension = os.path.splitext(old_file_name)[1]
+    #     new_image_name = "{0}_{1}{2}".format(self.submission.id, self.is_fossil[0], extension)
+    #     new_image_path = picture_upload_to(self.submission, new_image_name)
+    #     os.rename(old_image_path, new_image_path)
 
 @receiver(post_save, sender=Appraisal)
 def update_submission_approval_status(sender, instance, created, **kwargs):
@@ -41,4 +51,9 @@ def update_submission_approval_status(sender, instance, created, **kwargs):
     submission = instance.submission
     submission.approved = status_map[instance.is_fossil]
     submission.reviewed = True
+    # instance.rename_submission_image()
     submission.save()
+
+
+
+
