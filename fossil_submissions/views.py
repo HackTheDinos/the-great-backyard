@@ -50,12 +50,12 @@ class AppraisalViewSet(viewsets.ModelViewSet):
     serializer_class = AppraisalSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer)
-    
+
     def list(self, request, *args, **kwargs):
-        response = super(SubmissionViewSet, self).list(request, *args, **kwargs)
+        response = super(AppraisalViewSet, self).list(request, *args, **kwargs)
         serializer = self.get_serializer()
         if request.accepted_renderer.format == 'html':
-        	return Response({'submissions': response.data, 'serializer': serializer}, template_name='submissions/list.html')
+        	return Response({'submissions': response.data, 'serializer': serializer}, template_name='appraisals/list.html')
         return response
 
     def retrieve(self, request, *args, **kwargs):
