@@ -1,7 +1,11 @@
 from django.db import models
 
+def image_upload_to(instance, filename):
+    model = instance.__class__.__name__.lower()
+    return 'images/{model}/{filename}'.format(model=model, filename=filename)
+
 def picture_upload_to(self, filename):
-    return image_upload_to(self, re.sub(r'.*\.(\w+)', r'submission_img.\1', filename).lower())
+    return image_upload_to(self, filename)
 
 class Submission(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -14,6 +18,7 @@ class Submission(models.Model):
 
     def __unicode__(self):
         return "Fossil Submission - {0}".format(self.id)
+
 
     class Meta:
         ordering = ('created',)
