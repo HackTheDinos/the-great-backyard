@@ -4,7 +4,8 @@ from django.dispatch import receiver
 
 def image_upload_to(instance, filename):
     model = instance.__class__.__name__.lower()
-    return 'images/{model}/{filename}'.format(model=model, filename=filename)
+    review_status = 'reviewed' if instance.reviewed else 'needs_review'
+    return 'images/{model}/{review_status}/{filename}'.format(model=model, review_status=review_status, filename=filename)
 
 def picture_upload_to(self, filename):
     return image_upload_to(self, filename)

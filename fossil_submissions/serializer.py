@@ -6,6 +6,7 @@ class SubmissionSerializer(ModelSerializer):
     class Meta:
         model = Submission
         fields = ('created', 'description', 'latitude', 'image', 'longitude', 'approved', 'reviewed')
+        read_only_fields = ('approved', 'reviewed',)
 
 class UserSerializer(ModelSerializer):
     user_appraisals = HyperlinkedRelatedField(view_name='appraisal-detail', many=True, read_only=True)
