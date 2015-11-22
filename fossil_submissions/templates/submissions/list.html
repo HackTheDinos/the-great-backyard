@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Submissions{% endblock %}
+
+{% block content %}
+{% load rest_framework %}
+<div class="container">
+<div class='btn-wrapper'>
+  <a class="btn btn-info btn-lg top-btn" data-toggle="modal" data-target="#newSubmission" title="new athlete" data-tooltip>Submit a Submission</a>
+</div>
+
+<h1>Submissions</h1>
+<div class="list-group">
+	{% for submission in submissions %}
+  <a href="/submissions/{{ submission.id }}/" class="list-group-item">
+    <div class="row">
+      <div class="col-sm-4 vcenter">
+        {{ submission.created }}
+      </div><!--
+   --><div class="col-sm-4 vcenter">
+        {{ submission.description }}
+      </div><!--
+   --><div class="col-sm-4 vcenter">
+        {{ submission.latitude }}
+        {{ submission.longitude }}
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+</div>
+<div class="modal fade" id="newSubmission" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+  <div class="modal-dialog modal-sm"> 
+    <div class="modal-content">
+      <div class="modal-body">
+	    <form action="/submissions/" method="POST" enctype="multipart/form-data">
+		    {% csrf_token %}
+		    	{% render_form serializer template_pack='rest_framework/vertical' %}
+		    <input type="submit" value="Save">
+		</form>
+		</div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}
+
+
+

@@ -22,20 +22,20 @@ class SubmissionViewSet(viewsets.ModelViewSet):
         response = super(SubmissionViewSet, self).list(request, *args, **kwargs)
         serializer = self.get_serializer()
         if request.accepted_renderer.format == 'html':
-        	return Response({'data': response.data, 'serializer': serializer}, template_name='list.html')
+        	return Response({'submissions': response.data, 'serializer': serializer}, template_name='submissions/list.html')
         return response
 
     def create(self, request, *args, **kwargs):
     	response = super(SubmissionViewSet, self).create(request, *args, **kwargs)
         serializer = SubmissionSerializer(data=response.data)
         if not serializer.is_valid():
-        	return Response({'data': serializer.errors, 'serializer': serializer}, template_name='list.html')
+        	return Response({'data': serializer.errors, 'serializer': serializer}, template_name='submissions/list.html')
         return redirect('/submissions')
 
     def retrieve(self, request, *args, **kwargs):
         response = super(SubmissionViewSet, self).retrieve(request, *args, **kwargs)
         if request.accepted_renderer.format == 'html':
-        	return Response({'data': response.data}, template_name='retrieve.html')
+        	return Response({'data': response.data}, template_name='submissions/retrieve.html')
         return response
 
     def perform_create(self, serializer):
@@ -49,6 +49,20 @@ class AppraisalViewSet(viewsets.ModelViewSet):
     queryset = Appraisal.objects.all()
     serializer_class = AppraisalSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer)
+    
+    def list(self, request, *args, **kwargs):
+        response = super(SubmissionViewSet, self).list(request, *args, **kwargs)
+        serializer = self.get_serializer()
+        if request.accepted_renderer.format == 'html':
+        	return Response({'submissions': response.data, 'serializer': serializer}, template_name='submissions/list.html')
+        return response
+
+    def retrieve(self, request, *args, **kwargs):
+        response = super(AppraisalViewSet, self).retrieve(request, *args, **kwargs)
+        if request.accepted_renderer.format == 'html':
+        	return Response({'data': response.data}, template_name='appraisals/retrieve.html')
+        return response
 
     def perform_create(self, serializer):
         serializer.save(appraiser=self.request.user)
