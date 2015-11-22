@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from fossil_submissions.models import Submission
+from fossil_submissions.serializer import SubmissionSerializer
 
-# Create your views here.
+class SubmissionViewSet(viewsets.ModelViewSet):
+	queryset = Submission.objects.all()
+	serializer_class = SubmissionSerializer
