@@ -22,6 +22,12 @@ class SubmissionViewSet(viewsets.ModelViewSet):
         	return Response({'data': response.data}, template_name='list.html')
         return response
 
+    def retrieve(self, request, *args, **kwargs):
+        response = super(SubmissionViewSet, self).retrieve(request, *args, **kwargs)
+        if request.accepted_renderer.format == 'html':
+        	return Response({'data': response.data}, template_name='retrieve.html')
+        return response
+
     def perform_create(self, serializer):
         serializer.save(image=self.request.data.get('image'))
 

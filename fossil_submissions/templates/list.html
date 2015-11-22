@@ -2,7 +2,12 @@
 <body>
 <h1>Submissions</h1>
 	{% for submission in data %}
+		<div class='submission'>
 		{{ submission.created }}
+		{{ submission.description }}
+		{{ submission.latitude }}
+		{{ submission.longitude }}
+		</div>
 	{% endfor %}
 </body>
 </html>
