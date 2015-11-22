@@ -4,39 +4,43 @@
 
 {% if appraisal %}
 	<div class="container">
-		<div class="header-wrapper">
-		</div>
 		<div class="row">
-		<div class="col-sm-4">
-		</div>
-		<div class="col-sm-4">
-			<h1>Admin Appraised Submissions</h1>
-		</div>
-		<div class="col-sm-4">
+			<div class="col-sm-3">
+			</div>
+			<div class="col-sm-6">
+				<h1>Appraised Submission</h1>
+			</div>
+			<div class="col-sm-3">
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-6">
 				<div class='submission-info'>
 					<h2>Appraisal Details</h2>
-						<p><span class='info-tag'>Appraiser: </span>{{ submission.created }}</p>
-						<p><span class='info-tag'>Latitude: </span>{{ submission.latitude }}</p>
-						<p><span class='info-tag'>Longitude: </span>{{ submission.longitude }}</p>
-					</div>
-					<div class="description">
-						<h2>Description</h2>
-						{{ submission.description}}
-					</div>
+					<p><span class='info-tag'>Appraiser: </span>{{ appraisal.appraiser }}</p>
+					<p><span class='info-tag'>Latitude: </span>{{ appraisal.submission.latitude }}</p>
+					<p><span class='info-tag'>Longitude: </span>{{ appraisal.submission.longitude }}</p>
 				</div>
-				<div class="col-sm-6">
-					<div class='image'>
+				<div class="description">
+					<h2>Submission Description</h2>
+					{{ appraisal.submission.description}}
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class='image'>
 					<h2>Submission Image</h2>
-					{% if submission.image %}
+					{% if appraisal.submission.image %}
 						{% load staticfiles %}
-      					<div class='header-image'><img src="{{submission.image}}"/></div>
-      				{% else %}
-      					<h5> This submission has no photo </h5>
-      				{% endif %}
-					</div>
+	  					<div class='header-image'><img src="{{submission.image}}"/></div>
+	  				{% else %}
+	  					<h5> This appraisal has no photo </h5>
+	  				{% endif %}
+				</div>
+				<div class="appraisal-comment">
+					<h2>Appraisal Comment</h2>
+					{{ appraisal.comment}}
+					<h2>Is Fossil?</h2>
+					{{ appraisal.is_fossil }}
 				</div>
 			</div>
 		</div>
