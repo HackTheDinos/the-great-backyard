@@ -22,7 +22,7 @@ class SubmissionViewSet(viewsets.ModelViewSet):
         response = super(SubmissionViewSet, self).list(request, *args, **kwargs)
         serializer = self.get_serializer()
         if request.accepted_renderer.format == 'html':
-        	return Response({'submissions': response.data, 'serializer': serializer}, template_name='submissions/list.html')
+        	return Response({'submissions': response.data, 'serializer': serializer, 'type': type(response)}, template_name='submissions/list.html')
         return response
 
     def create(self, request, *args, **kwargs):
@@ -52,10 +52,11 @@ class AppraisalViewSet(viewsets.ModelViewSet):
     renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer)
 
     def list(self, request, *args, **kwargs):
+        appraisals = Appraisal.objects.all()
         response = super(AppraisalViewSet, self).list(request, *args, **kwargs)
         serializer = self.get_serializer()
         if request.accepted_renderer.format == 'html':
-        	return Response({'appraisals': response.data, 'serializer': serializer}, template_name='appraisals/list.html')
+        	return Response({'appraisals': appraisals, 'serializer': serializer}, template_name='appraisals/list.html')
         return response
 
     def create(self, request, *args, **kwargs):

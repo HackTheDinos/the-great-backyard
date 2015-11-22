@@ -1,1 +1,45 @@
-{{ data }}
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if appraisal %}
+	<div class="container">
+		<div class="header-wrapper">
+		</div>
+		<div class="row">
+		<div class="col-sm-4">
+		</div>
+		<div class="col-sm-4">
+			<h1>Admin Appraised Submissions</h1>
+		</div>
+		<div class="col-sm-4">
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class='submission-info'>
+					<h2>Appraisal Details</h2>
+						<p><span class='info-tag'>Appraiser: </span>{{ submission.created }}</p>
+						<p><span class='info-tag'>Latitude: </span>{{ submission.latitude }}</p>
+						<p><span class='info-tag'>Longitude: </span>{{ submission.longitude }}</p>
+					</div>
+					<div class="description">
+						<h2>Description</h2>
+						{{ submission.description}}
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class='image'>
+					<h2>Submission Image</h2>
+					{% if submission.image %}
+						{% load staticfiles %}
+      					<div class='header-image'><img src="{{submission.image}}"/></div>
+      				{% else %}
+      					<h5> This submission has no photo </h5>
+      				{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+{% endblock %}

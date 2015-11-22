@@ -11,18 +11,34 @@
 
 <h1>Appraisals</h1>
 <div class="list-group">
-	{% for appraisal in appraisals %}
+    <div class="row">
+     <div class="col-sm-3 vcenter">
+      <h5>Appraiser</h5>
+    </div>
+    <div class="col-sm-3 vcenter">
+      <h5>Submission Description</h5>
+    </div>
+    <div class="col-sm-3 vcenter">
+      <h5>Appraisal Comment</h5>
+    </div>
+    <div class="col-sm-3 vcenter">
+      <h5>Is Fossil?</h5>
+    </div>
+  </div>
+  {% for appraisal in appraisals %}
   <a href="/appraisals/{{ appraisal.id }}/" class="list-group-item">
     <div class="row">
-      <div class="col-sm-4 vcenter">
+      <div class="col-sm-3 vcenter">
         {{ appraisal.appraiser }}
-      </div><!--
-   --><div class="col-sm-4 vcenter">
+      </div>
+      <div class="col-sm-3 vcenter">
         {{ appraisal.submission.description }}
-        {{ appraisal.is_fossil }}
-      </div><!--
-   --><div class="col-sm-4 vcenter">
+      </div>
+      <div class="col-sm-3 vcenter">
         {{ appraisal.comment }}
+      </div>
+      <div class="col-sm-3 vcenter">
+        {{ appraisal.is_fossil }}
       </div>
     </div>
   </a>
