@@ -8,8 +8,9 @@ class SubmissionViewSet(viewsets.ModelViewSet):
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
     parser_classes = (parsers.MultiPartParser, parsers.FormParser,)
-    filter_backends = (filters.DjangoFilterBackend,)
+    filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter,)
     filter_fields = ('approved', 'reviewed',)
+    search_fields = ('description',)
 
     def perform_create(self, serializer):
         serializer.save(image=self.request.data.get('image'))
