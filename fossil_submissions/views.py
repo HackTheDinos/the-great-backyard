@@ -16,7 +16,7 @@ class SubmissionViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter,)
     filter_fields = ('approved', 'reviewed',)
     search_fields = ('description',)
-    renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer)
+    renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer, renderers.BrowsableAPIRenderer)
 
     def list(self, request, *args, **kwargs):
         submissions = self.queryset
@@ -51,7 +51,7 @@ class AppraisalViewSet(viewsets.ModelViewSet):
     queryset = Appraisal.objects.all()
     serializer_class = AppraisalSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer)
+    renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer, renderers.BrowsableAPIRenderer)
 
     def list(self, request, *args, **kwargs):
         appraisals = self.queryset
